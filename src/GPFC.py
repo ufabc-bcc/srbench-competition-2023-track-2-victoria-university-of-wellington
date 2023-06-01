@@ -167,11 +167,17 @@ def plot_predictions(est, x_test, y_test, index_test):
         sns.lineplot(index_test, y_test_subset[:, i], label='Ground Truth', ax=ax, color=colors[1],
                      linestyle='dashed')
         ax.set_title(titles_subset[i])
-        ax.legend()
+        ax.get_legend().remove()
+
     # Adjusting the layout
-    plt.tight_layout()
+    plt.tight_layout(rect=[0, 0.1, 1, 1])
+
+    # Adding a shared legend at the bottom
+    lines, labels = axs[0, 0].get_legend_handles_labels()
+    fig.legend(lines, labels, loc='lower center', ncol=2, bbox_to_anchor=(0.52, 0))
+
     file_name = './lanes_prediction.eps'
-    plt.savefig(file_name, format='eps')
+    plt.savefig(file_name, format='eps', bbox_inches='tight')
     file_copy(file_name)
     plt.show()
 
@@ -230,11 +236,11 @@ def print_expressions(est, x_test, y_test):
 
 
 def plot_trend(est, x_test, y_test):
-    # `constructed_features` is a 2D array with 10 columns
+    # `constructed_features` is a 2D array with 5 columns
     constructed_features = est.feature_generation(x_test, est.hof[0])
     number_of_genes = len(est.hof[0].gene)
     y_pred = est.predict(x_test)
-    # Create a new figure with two rows and five columns
+    # Create a new figure with one row and five columns
     fig, axes = plt.subplots(1, number_of_genes, figsize=(10 * 1.5, 1.5 * 1.5))
     # Flatten the axes array to make it easier to iterate
     axes = axes.flatten()
@@ -258,10 +264,15 @@ def plot_trend(est, x_test, y_test):
         ax.set_ylabel('Target')
         # Set the title
         ax.set_title(f'Feature {i + 1}')
-        # Display a legend
-        ax.legend()
+        # Remove the legend for each subplot
+        ax.get_legend().remove()
     # Adjust subplot spacing
-    plt.tight_layout()
+    plt.tight_layout(rect=[0, 0.1, 1, 1])
+
+    # Adding a shared legend at the bottom
+    lines, labels = axes[0].get_legend_handles_labels()
+    fig.legend(lines, labels, loc='lower center', ncol=2, bbox_to_anchor=(0.52, 0))
+
     file_name = './correlation.eps'
     plt.savefig(file_name, format='eps')
     file_copy(file_name)
