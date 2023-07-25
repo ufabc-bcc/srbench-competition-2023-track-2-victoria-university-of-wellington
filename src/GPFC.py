@@ -29,7 +29,7 @@ from evolutionary_forest.model.MTL import MTLRidgeCV
 from evolutionary_forest.utils import reset_random
 import seaborn as sns
 
-def file_copy():
+def file_copy(x):
     pass
 
 def post_train_on_missing_data(est: EvolutionaryForestRegressor, scaler: StandardScaler):
